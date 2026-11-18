@@ -49,13 +49,14 @@ const deckMetaJson = JSON.stringify({
         <a href="#/0/1" class="topbar__brand" style="text-decoration: none;">
           <GdgLogo compact />
         </a>
-        <span class="block-chip" data-block-chip>Inicio · Portada y el problema real</span>
+        <span class="block-chip" data-block-chip>Inicio · Portada, expositor y el problema real</span>
       </div>
 
       <div class="topbar__right">
         <button type="button" class="icon-pill" data-toggle-mode>📖 Modo guía</button>
         <button type="button" class="icon-pill" data-toggle-theme>🌙 Oscuro</button>
         <button type="button" class="icon-pill" data-open-overview title="Vista general (O)">⊞ Índice</button>
+        <button type="button" class="icon-pill" data-toggle-fullscreen title="Pantalla completa (F)">⛶ Pantalla completa</button>
         <button type="button" class="icon-pill" data-open-presenter title="Vista de presentador (S)">🎤</button>
         <button type="button" class="icon-pill" data-open-shortcuts title="Atajos (?)">?</button>
       </div>
@@ -106,6 +107,7 @@ const deckMetaJson = JSON.stringify({
         </div>
         <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 8px;">
           <li><code>←</code> <code>→</code> o <code>Espacio</code>: avanzar / retroceder diapositiva</li>
+          <li><code>F</code>: activar o salir de pantalla completa</li>
           <li><code>O</code> / <code>Esc</code>: abrir o cerrar mapa del taller</li>
           <li><code>L</code>: alternar entre Presentación y Guía de lectura</li>
           <li><code>T</code>: alternar tema claro / oscuro</li>

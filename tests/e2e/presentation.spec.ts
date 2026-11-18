@@ -8,16 +8,21 @@ test.describe('Taller Fundamentos de Software con IA', () => {
     test.skip(isMobile, 'Flujo de escritorio');
     await page.goto('/');
 
-    // Portada visible en modo presentación
+    // Portada visible en modo presentación ocupando toda la pantalla
     await expect(page.locator('body')).toHaveAttribute('data-mode', 'presentacion');
+    await expect(page.locator('[data-toggle-fullscreen]')).toBeVisible();
+    const activeSlideBox = await page.locator('.slide.is-active').boundingBox();
+    expect(activeSlideBox?.width ?? 0).toBeGreaterThanOrEqual(1360);
     await expect(page.getByRole('heading', { name: 'Fundamentos de Software con IA' })).toBeVisible();
 
-    // Avanza a diapositiva del expositor (CV)
+    // Avanza a diapositiva del expositor (formato limpio + CAINCO, sin tarjetas extra)
     await page.keyboard.press('ArrowRight');
     const speakerSlide = page.locator('[data-slide-id="0-2"]');
     await expect(speakerSlide).toHaveClass(/is-active/);
     await expect(speakerSlide.getByRole('heading', { name: 'Kevin Brayan Gómez Rocha' })).toBeVisible();
     await expect(speakerSlide.getByText('7+ años')).toBeVisible();
+    await expect(speakerSlide.getByText('CAINCO', { exact: true })).toBeVisible();
+    await expect(speakerSlide.getByText('Grazia IA')).toHaveCount(0);
 
     // Bloque 1: Anatomía interactiva
     await page.goto('/#/1/1');

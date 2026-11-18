@@ -170,6 +170,27 @@ function initDeck() {
     });
   });
 
+  const fullscreenBtn = document.querySelector<HTMLElement>('[data-toggle-fullscreen]');
+
+  async function toggleFullscreen() {
+    try {
+      if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen();
+      } else {
+        await document.exitFullscreen();
+      }
+    } catch {
+      // Ignora si el navegador bloquea fullscreen fuera de gesto
+    }
+  }
+
+  document.addEventListener('fullscreenchange', () => {
+    if (fullscreenBtn) {
+      fullscreenBtn.textContent = document.fullscreenElement ? '🗗 Salir' : '⛶ Pantalla completa';
+    }
+  });
+
+  fullscreenBtn?.addEventListener('click', toggleFullscreen);
   document.querySelector('[data-open-presenter]')?.addEventListener('click', () => {
     window.open('/presentador', 'gdg-presentador', 'width=1100,height=740');
   });
@@ -221,6 +242,10 @@ function initDeck() {
         applyMode(next);
         break;
       }
+      case 'f':
+      case 'F':
+        toggleFullscreen();
+        break;
       case 's':
       case 'S':
         window.open('/presentador', 'gdg-presentador', 'width=1100,height=740');

@@ -32,9 +32,10 @@ describe('deck navigation helpers', () => {
 });
 
 describe('speaker CV integrity and QR generation', () => {
-  it('mantiene los datos oficiales del CV', () => {
+  it('mantiene los datos oficiales del CV y rol en CAINCO sin exceso de detalle', () => {
     expect(SPEAKER.name).toBe('Kevin Brayan Gómez Rocha');
     expect(SPEAKER.metrics[0].value).toBe('7+ años');
+    expect(SPEAKER.metrics.some((m) => m.value === 'CAINCO')).toBe(true);
     expect(SPEAKER.contacts.some((c) => c.value === 'brayankgr@gmail.com')).toBe(true);
   });
 

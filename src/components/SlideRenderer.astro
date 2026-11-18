@@ -22,6 +22,14 @@ interface Props {
 
 const { slide, qrSvg, shareUrl, totalSlides, globalIndex } = Astro.props;
 const isCover = slide.layout === 'cover';
+const isTimelineBand =
+  slide.layout === 'problem' ||
+  slide.layout === 'pillars' ||
+  slide.layout === 'ux-trio' ||
+  slide.layout === 'api-concept' ||
+  slide.layout === 'environments';
+const isSplitFeature =
+  slide.layout === 'backend-concept' || slide.layout === 'auth-split';
 ---
 
 <section
@@ -75,8 +83,8 @@ const isCover = slide.layout === 'cover';
             <Image
               src={speakerPhoto}
               alt={SPEAKER.name}
-              width={52}
-              height={52}
+              width={56}
+              height={56}
               class="cover-speaker-chip__img"
             />
             <div>
@@ -98,17 +106,15 @@ const isCover = slide.layout === 'cover';
         </div>
 
         {slide.layout === 'speaker' && (
-          <div class="speaker-bento">
-            <div class="speaker-profile-card">
-              <div class="speaker-photo-wrap">
-                <Image
-                  src={speakerPhoto}
-                  alt={SPEAKER.name}
-                  width={260}
-                  height={260}
-                  class="speaker-photo"
-                />
-              </div>
+          <div class="speaker-stage">
+            <div class="speaker-intro">
+              <Image
+                src={speakerPhoto}
+                alt={SPEAKER.name}
+                width={220}
+                height={220}
+                class="speaker-photo"
+              />
               <p class="speaker-bio">{SPEAKER.summary}</p>
               <div class="speaker-meta-line">
                 <span>{SPEAKER.location}</span>
@@ -117,25 +123,16 @@ const isCover = slide.layout === 'cover';
               </div>
             </div>
 
-            <div class="speaker-right">
-              <div class="metrics-grid">
-                {SPEAKER.metrics.map((metric) => (
-                  <article class="metric-card" data-accent={metric.accent}>
-                    <strong class="metric-card__val">{metric.value}</strong>
-                    <span class="metric-card__label">{metric.label}</span>
-                    <small>{metric.detail}</small>
-                  </article>
-                ))}
-              </div>
-
-              <div class="highlights-list">
-                {SPEAKER.highlights.map((item) => (
-                  <div class="highlight-row">
-                    <strong>{item.role} · {item.org}</strong>
-                    <p>{item.detail}</p>
+            <div class="speaker-ledger" aria-label="Resumen de trayectoria">
+              {SPEAKER.metrics.map((metric) => (
+                <div class="ledger-row" data-accent={metric.accent}>
+                  <div class="ledger-row__stat">
+                    <strong class="ledger-row__val">{metric.value}</strong>
+                    <span class="ledger-row__label">{metric.label}</span>
                   </div>
-                ))}
-              </div>
+                  <p class="ledger-row__detail">{metric.detail}</p>
+                </div>
+              ))}
             </div>
           </div>
         )}
@@ -148,10 +145,19 @@ const isCover = slide.layout === 'cover';
         {slide.layout === 'checklist-interactive' && <PreSddChecklist />}
 
         {slide.cards && slide.cards.length > 0 && (
-          <div class:list={['cards-grid', `cards-grid--${Math.min(slide.cards.length, 4)}`]}>
+          <div
+            class:list={[
+              isTimelineBand
+                ? 'editorial-columns'
+                : isSplitFeature
+                  ? 'split-features'
+                  : 'editorial-rows',
+              `cols--${Math.min(slide.cards.length, 4)}`,
+            ]}
+          >
             {slide.cards.map((card) => (
-              <article class="bento-card" data-accent={card.accent ?? slide.accent}>
-                {card.tag && <span class="bento-card__tag">{card.tag}</span>}
+              <article class="editorial-item" data-accent={card.accent ?? slide.accent}>
+                {card.tag && <span class="editorial-item__tag">{card.tag}</span>}
                 <h3>{card.title}</h3>
                 <p>{card.description}</p>
               </article>
@@ -239,8 +245,8 @@ const isCover = slide.layout === 'cover';
                 <Image
                   src={speakerPhoto}
                   alt={SPEAKER.name}
-                  width={76}
-                  height={76}
+                  width={84}
+                  height={84}
                   class="contact-card__avatar"
                 />
                 <div>
