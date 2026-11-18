@@ -1,0 +1,15 @@
+# Dependencias y build (para la fase de presentación web)
+node_modules/
+dist/
+.astro/
+.vercel/
+
+# Entorno y secretos
+.env
+.env.*
+!.env.example
+
+# Sistema y editores
+.DS_Store
+Thumbs.db
+*.log
