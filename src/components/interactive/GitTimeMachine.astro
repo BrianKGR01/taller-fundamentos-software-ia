@@ -1,0 +1,34 @@
+---
+---
+
+<div class="git-machine" data-git-machine>
+  <div class="git-timeline" role="group" aria-label="Línea de tiempo Git">
+    <button type="button" class="git-node is-active" data-commit="1">
+      <span class="git-node__dot"></span>
+      <strong>Commit 1</strong>
+      <small>Estructura inicial y diseño</small>
+    </button>
+    <button type="button" class="git-node" data-commit="2">
+      <span class="git-node__dot"></span>
+      <strong>Commit 2 ✓</strong>
+      <small>Login y catálogo funcionando</small>
+    </button>
+    <button type="button" class="git-node git-node--danger" data-commit="3">
+      <span class="git-node__dot"></span>
+      <strong>Commit 3 💥</strong>
+      <small>La IA cambió pagos y rompió el catálogo</small>
+    </button>
+  </div>
+
+  <div class="git-stage" data-git-stage>
+    <div class="git-stage__info">
+      <span class="pill-tag" data-git-badge>Versión actual: Commit 1</span>
+      <p data-git-status>
+        Punto inicial guardado con <code>.gitignore</code> activo (tu archivo <code>.env</code> de claves secretas nunca se sube a GitHub).
+      </p>
+    </div>
+    <button type="button" class="rollback-btn" data-git-rollback hidden>
+      ↺ Volver al Commit 2 (Rollback seguro)
+    </button>
+  </div>
+</div>

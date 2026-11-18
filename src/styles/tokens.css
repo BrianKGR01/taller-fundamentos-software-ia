@@ -1,0 +1,133 @@
+/*
+ * Tokens de diseño · GDG Studio Expressive
+ * Paleta oficial Google / GDG con alto contraste en tema claro y oscuro.
+ */
+
+:root {
+  /* Primitivos Google */
+  --g-blue: #1a73e8;
+  --g-blue-vivid: #4285f4;
+  --g-blue-soft: #e8f0fe;
+  --g-blue-ink: #174ea6;
+
+  --g-red: #d93025;
+  --g-red-vivid: #ea4335;
+  --g-red-soft: #fce8e6;
+  --g-red-ink: #a50e0e;
+
+  --g-yellow: #e37400;
+  --g-yellow-vivid: #f9ab00;
+  --g-yellow-soft: #fef7e0;
+  --g-yellow-ink: #8a4b00;
+
+  --g-green: #188038;
+  --g-green-vivid: #34a853;
+  --g-green-soft: #e6f4ea;
+  --g-green-ink: #0d652d;
+
+  /* Superficies y texto (Tema Claro por defecto: Google Daylight Studio) */
+  --surface-canvas: #f8fafd;
+  --surface-card: #ffffff;
+  --surface-subtle: #f1f3f4;
+  --surface-elevated: #ffffff;
+  --surface-code: #1e2028;
+
+  --ink-primary: #1f1f1f;
+  --ink-secondary: #444746;
+  --ink-muted: #5f6368;
+  --ink-on-accent: #ffffff;
+  --ink-code: #e8eaed;
+
+  --border-hairline: #dadce0;
+  --border-strong: #c4c7c5;
+  --dot-grid: rgba(26, 115, 232, 0.11);
+
+  --shadow-card: 0 2px 10px rgba(31, 31, 31, 0.05), 0 1px 3px rgba(31, 31, 31, 0.04);
+  --shadow-float: 0 14px 36px rgba(31, 31, 31, 0.11), 0 4px 12px rgba(31, 31, 31, 0.06);
+
+  /* Tipografía */
+  --font-sans: 'Google Sans', 'Plus Jakarta Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Google Sans Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Acento activo por bloque (por defecto Blue) */
+  --accent: var(--g-blue);
+  --accent-vivid: var(--g-blue-vivid);
+  --accent-soft: var(--g-blue-soft);
+  --accent-ink: var(--g-blue-ink);
+
+  /* Radios Material 3 Expressive */
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+  --radius-pill: 9999px;
+}
+
+[data-theme='dark'] {
+  --surface-canvas: #111318;
+  --surface-card: #1a1d24;
+  --surface-subtle: #232732;
+  --surface-elevated: #222631;
+  --surface-code: #0d0f14;
+
+  --ink-primary: #f1f3f4;
+  --ink-secondary: #c4c7c5;
+  --ink-muted: #9aa0a6;
+  --ink-on-accent: #0f1115;
+  --ink-code: #e8eaed;
+
+  --border-hairline: #2e3340;
+  --border-strong: #434959;
+  --dot-grid: rgba(138, 180, 248, 0.11);
+
+  --shadow-card: 0 4px 18px rgba(0, 0, 0, 0.35);
+  --shadow-float: 0 18px 42px rgba(0, 0, 0, 0.55);
+
+  --g-blue: #8ab4f8;
+  --g-blue-vivid: #669df6;
+  --g-blue-soft: rgba(66, 133, 244, 0.16);
+  --g-blue-ink: #aecbfa;
+
+  --g-red: #f28b82;
+  --g-red-vivid: #ee675c;
+  --g-red-soft: rgba(234, 67, 53, 0.16);
+  --g-red-ink: #f6aea9;
+
+  --g-yellow: #fdd663;
+  --g-yellow-vivid: #fcc934;
+  --g-yellow-soft: rgba(249, 171, 0, 0.16);
+  --g-yellow-ink: #fde293;
+
+  --g-green: #81c995;
+  --g-green-vivid: #5bb974;
+  --g-green-soft: rgba(52, 168, 83, 0.16);
+  --g-green-ink: #a8dab5;
+}
+
+/* Mapeo de acento por bloque */
+[data-accent='blue'] {
+  --accent: var(--g-blue);
+  --accent-vivid: var(--g-blue-vivid);
+  --accent-soft: var(--g-blue-soft);
+  --accent-ink: var(--g-blue-ink);
+}
+
+[data-accent='red'] {
+  --accent: var(--g-red);
+  --accent-vivid: var(--g-red-vivid);
+  --accent-soft: var(--g-red-soft);
+  --accent-ink: var(--g-red-ink);
+}
+
+[data-accent='yellow'] {
+  --accent: var(--g-yellow);
+  --accent-vivid: var(--g-yellow-vivid);
+  --accent-soft: var(--g-yellow-soft);
+  --accent-ink: var(--g-yellow-ink);
+}
+
+[data-accent='green'] {
+  --accent: var(--g-green);
+  --accent-vivid: var(--g-green-vivid);
+  --accent-soft: var(--g-green-soft);
+  --accent-ink: var(--g-green-ink);
+}

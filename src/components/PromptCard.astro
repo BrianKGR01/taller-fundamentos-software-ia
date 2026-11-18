@@ -1,0 +1,26 @@
+---
+interface Props {
+  label?: string;
+  prompt: string;
+}
+
+const { label = 'Instrucción recomendada para la IA', prompt } = Astro.props;
+---
+
+<div class="prompt-card" data-prompt-card>
+  <div class="prompt-card__head">
+    <span class="prompt-card__label">
+      <span class="prompt-dot" aria-hidden="true"></span>
+      {label}
+    </span>
+    <button
+      type="button"
+      class="copy-btn"
+      data-copy-text={prompt}
+      aria-label="Copiar instrucción para la IA"
+    >
+      <span data-copy-label>Copiar instrucción</span>
+    </button>
+  </div>
+  <pre class="prompt-card__body"><code>{prompt}</code></pre>
+</div>

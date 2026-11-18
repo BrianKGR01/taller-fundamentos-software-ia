@@ -1,0 +1,51 @@
+---
+---
+
+<div class="db-viz" data-db-viz>
+  <div class="db-entities">
+    <button type="button" class="db-table is-active" data-db-entity="cliente">
+      <span class="db-table__title">Tabla: Clientes</span>
+      <ul>
+        <li><code>id</code> · #CL-42 (único)</li>
+        <li><code>nombre</code> · Ana Morales</li>
+        <li><code>whatsapp</code> · +591 700…</li>
+      </ul>
+    </button>
+
+    <div class="db-link" aria-hidden="true">1 ── N</div>
+
+    <button type="button" class="db-table" data-db-entity="reserva">
+      <span class="db-table__title">Tabla: Reservas</span>
+      <ul>
+        <li><code>id</code> · #RES-104 (único)</li>
+        <li><code>cliente_id</code> · #CL-42</li>
+        <li><code>estado</code> · <strong data-db-state-badge>pendiente</strong></li>
+      </ul>
+    </button>
+
+    <div class="db-link" aria-hidden="true">1 ── 1</div>
+
+    <button type="button" class="db-table" data-db-entity="pago">
+      <span class="db-table__title">Tabla: Pagos</span>
+      <ul>
+        <li><code>id</code> · #PAG-889 (único)</li>
+        <li><code>reserva_id</code> · #RES-104</li>
+        <li><code>monto</code> · Bs. 120</li>
+      </ul>
+    </button>
+  </div>
+
+  <div class="db-bottom">
+    <div class="db-detail" data-db-detail>
+      <strong>Tabla Clientes:</strong> guarda cada persona una sola vez. Si Ana cambia su número, se actualiza aquí y todas sus reservas quedan al día sin duplicarse.
+    </div>
+
+    <div class="db-states" aria-label="Ciclo de estado de una reserva">
+      <span>Estado de #RES-104:</span>
+      <button type="button" class="state-pill is-active" data-res-state="pendiente">pendiente</button>
+      <button type="button" class="state-pill" data-res-state="confirmada">confirmada</button>
+      <button type="button" class="state-pill" data-res-state="pagada">pagada</button>
+      <button type="button" class="state-pill" data-res-state="cancelada">cancelada</button>
+    </div>
+  </div>
+</div>

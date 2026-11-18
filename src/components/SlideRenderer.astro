@@ -1,0 +1,280 @@
+---
+import { Image } from 'astro:assets';
+import type { WorkshopSlide } from '@/data/slides';
+import { SPEAKER } from '@/data/speaker';
+import speakerPhoto from '@/assets/persona/perfil2026.png';
+import gdgIsotipo from '@/assets/gdg/gdg-isotipo.svg?raw';
+import PromptCard from './PromptCard.astro';
+import RestaurantAnatomy from './interactive/RestaurantAnatomy.astro';
+import UxStatesDemo from './interactive/UxStatesDemo.astro';
+import BackendTrapDemo from './interactive/BackendTrapDemo.astro';
+import DatabaseVisualizer from './interactive/DatabaseVisualizer.astro';
+import GitTimeMachine from './interactive/GitTimeMachine.astro';
+import PreSddChecklist from './interactive/PreSddChecklist.astro';
+
+interface Props {
+  slide: WorkshopSlide;
+  qrSvg: string;
+  shareUrl: string;
+  totalSlides: number;
+  globalIndex: number;
+}
+
+const { slide, qrSvg, shareUrl, totalSlides, globalIndex } = Astro.props;
+const isCover = slide.layout === 'cover';
+---
+
+<section
+  class:list={['slide', `slide--${slide.layout}`, { 'is-active': globalIndex === 0 }]}
+  data-slide
+  data-slide-index={globalIndex}
+  data-block-id={slide.blockId}
+  data-slide-id={slide.id}
+  data-accent={slide.accent}
+  aria-label={`${slide.blockId}.${slide.indexInBlock} — ${slide.title}`}
+>
+  <div class="slide__frame">
+    {!isCover && (
+      <header class="slide__header">
+        <span class="eyebrow-pill">
+          <span class="eyebrow-dot" aria-hidden="true"></span>
+          {slide.eyebrow}
+        </span>
+        <span class="slide__counter-tag">
+          {slide.blockId}.{slide.indexInBlock} · {globalIndex + 1}/{totalSlides}
+        </span>
+      </header>
+    )}
+
+    {isCover ? (
+      <div class="cover-stage">
+        <div class="cover-shapes" aria-hidden="true">
+          <span class="shape shape--blue"></span>
+          <span class="shape shape--red"></span>
+          <span class="shape shape--yellow"></span>
+          <span class="shape shape--green"></span>
+        </div>
+
+        <div class="cover-pill-row">
+          <span class="gdg-badge">
+            <span class="gdg-badge__iso" set:html={gdgIsotipo} />
+            <span>GDG Santa Cruz</span>
+          </span>
+          <span class="eyebrow-pill">Antes de Spec-Driven Development</span>
+        </div>
+
+        <h1 class="cover-title">{slide.title}</h1>
+        <p class="cover-subtitle">{slide.subtitle}</p>
+
+        {slide.highlightQuote && (
+          <blockquote class="cover-quote">{slide.highlightQuote}</blockquote>
+        )}
+
+        <div class="cover-footer">
+          <div class="cover-speaker-chip">
+            <Image
+              src={speakerPhoto}
+              alt={SPEAKER.name}
+              width={52}
+              height={52}
+              class="cover-speaker-chip__img"
+            />
+            <div>
+              <strong>{SPEAKER.name}</strong>
+              <small>{SPEAKER.headline}</small>
+            </div>
+          </div>
+
+          <button type="button" class="cta-primary" data-start-deck>
+            Comenzar taller →
+          </button>
+        </div>
+      </div>
+    ) : (
+      <div class="slide__body">
+        <div class="slide__heading-wrap">
+          <h2 class="slide__title">{slide.title}</h2>
+          {slide.subtitle && <p class="slide__subtitle">{slide.subtitle}</p>}
+        </div>
+
+        {slide.layout === 'speaker' && (
+          <div class="speaker-bento">
+            <div class="speaker-profile-card">
+              <div class="speaker-photo-wrap">
+                <Image
+                  src={speakerPhoto}
+                  alt={SPEAKER.name}
+                  width={260}
+                  height={260}
+                  class="speaker-photo"
+                />
+              </div>
+              <p class="speaker-bio">{SPEAKER.summary}</p>
+              <div class="speaker-meta-line">
+                <span>{SPEAKER.location}</span>
+                <span>·</span>
+                <span>{SPEAKER.contacts[0].value}</span>
+              </div>
+            </div>
+
+            <div class="speaker-right">
+              <div class="metrics-grid">
+                {SPEAKER.metrics.map((metric) => (
+                  <article class="metric-card" data-accent={metric.accent}>
+                    <strong class="metric-card__val">{metric.value}</strong>
+                    <span class="metric-card__label">{metric.label}</span>
+                    <small>{metric.detail}</small>
+                  </article>
+                ))}
+              </div>
+
+              <div class="highlights-list">
+                {SPEAKER.highlights.map((item) => (
+                  <div class="highlight-row">
+                    <strong>{item.role} · {item.org}</strong>
+                    <p>{item.detail}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {slide.layout === 'anatomy-interactive' && <RestaurantAnatomy />}
+        {slide.layout === 'ux-states-interactive' && <UxStatesDemo />}
+        {slide.layout === 'backend-trap-interactive' && <BackendTrapDemo />}
+        {slide.layout === 'db-visualizer-interactive' && <DatabaseVisualizer />}
+        {slide.layout === 'git-timemachine-interactive' && <GitTimeMachine />}
+        {slide.layout === 'checklist-interactive' && <PreSddChecklist />}
+
+        {slide.cards && slide.cards.length > 0 && (
+          <div class:list={['cards-grid', `cards-grid--${Math.min(slide.cards.length, 4)}`]}>
+            {slide.cards.map((card) => (
+              <article class="bento-card" data-accent={card.accent ?? slide.accent}>
+                {card.tag && <span class="bento-card__tag">{card.tag}</span>}
+                <h3>{card.title}</h3>
+                <p>{card.description}</p>
+              </article>
+            ))}
+          </div>
+        )}
+
+        {slide.comparison && (
+          <div class="compare-grid">
+            <article class="compare-col compare-col--bad">
+              <h3>{slide.comparison.badTitle}</h3>
+              <ul>
+                {slide.comparison.badItems.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </article>
+            <article class="compare-col compare-col--good">
+              <h3>{slide.comparison.goodTitle}</h3>
+              <ul>
+                {slide.comparison.goodItems.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </article>
+          </div>
+        )}
+
+        {slide.optionalNote && (
+          <aside class="optional-callout">
+            <strong>{slide.optionalNote.title}</strong>
+            <ul>
+              {slide.optionalNote.items.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </aside>
+        )}
+
+        {slide.highlightQuote && (
+          <blockquote class="callout-quote">{slide.highlightQuote}</blockquote>
+        )}
+
+        {slide.promptText && (
+          <PromptCard label={slide.promptLabel} prompt={slide.promptText} />
+        )}
+
+        {slide.layout === 'bridge-sdd' && (
+          <div class="bridge-panel">
+            <div class="bridge-steps">
+              <div class="bridge-step is-done">
+                <span class="bridge-step__num">Paso 1 · Hoy</span>
+                <strong>Fundamentos de Software con IA</strong>
+                <p>Entiendes UX/UI, Backend, Datos, APIs, Auth, Seguridad, Git y Entornos.</p>
+              </div>
+              <div class="bridge-arrow" aria-hidden="true">→</div>
+              <a
+                href={SPEAKER.nextWorkshopUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="bridge-step bridge-step--link"
+              >
+                <span class="bridge-step__num">Paso 2 · Siguiente taller ↗</span>
+                <strong>Spec-Driven Development</strong>
+                <p>Spec funcional, spec técnica, reglas en AGENTS.md, hitos y despliegue.</p>
+                <span class="bridge-url">{SPEAKER.nextWorkshopUrl}</span>
+              </a>
+            </div>
+          </div>
+        )}
+
+        {slide.layout === 'contact-qr' && (
+          <div class="contact-bento">
+            <div class="qr-card">
+              <div class="qr-card__box" set:html={qrSvg} />
+              <div class="qr-card__info">
+                <span class="pill-tag">Escanea para abrir en tu celular</span>
+                <p class="qr-card__url">{shareUrl}</p>
+                <small>Incluye las demos interactivas y todos los prompts listos para copiar.</small>
+              </div>
+            </div>
+
+            <div class="contact-card">
+              <div class="contact-card__person">
+                <Image
+                  src={speakerPhoto}
+                  alt={SPEAKER.name}
+                  width={76}
+                  height={76}
+                  class="contact-card__avatar"
+                />
+                <div>
+                  <h3>{SPEAKER.name}</h3>
+                  <p>{SPEAKER.community}</p>
+                </div>
+              </div>
+
+              <div class="contact-links">
+                {SPEAKER.contacts.map((contact) => (
+                  <a
+                    href={contact.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="contact-link-pill"
+                  >
+                    <span>{contact.label}</span>
+                    <strong>{contact.value} ↗</strong>
+                  </a>
+                ))}
+                <a
+                  href={SPEAKER.nextWorkshopUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="contact-link-pill contact-link-pill--highlight"
+                >
+                  <span>Siguiente taller (SDD)</span>
+                  <strong>taller-ttw-ia-empresas.vercel.app ↗</strong>
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    )}
+  </div>
+</section>

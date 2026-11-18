@@ -1,0 +1,122 @@
+---
+import '@/styles/fonts.css';
+import '@/styles/tokens.css';
+import '@/styles/deck.css';
+import { BLOCKS } from '@/data/blocks';
+import { SLIDES } from '@/data/slides';
+import { generateQrSvg } from '@/lib/qr';
+import GdgLogo from '@/components/GdgLogo.astro';
+import SlideRenderer from '@/components/SlideRenderer.astro';
+
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://taller-fundamentos-software-ia.vercel.app';
+const shareUrl = `${siteUrl}/?modo=lectura`;
+const qrSvg = await generateQrSvg(shareUrl);
+
+const blockMap = Object.fromEntries(BLOCKS.map((b) => [String(b.id), `${b.label} · ${b.title}`]));
+const deckMetaJson = JSON.stringify({
+  slides: SLIDES.map((s, globalIndex) => ({
+    id: s.id,
+    blockId: s.blockId,
+    indexInBlock: s.indexInBlock,
+    globalIndex,
+    title: s.title,
+    accent: s.accent,
+    presenterNote: s.presenterNote,
+  })),
+  blocks: blockMap,
+});
+---
+
+<!doctype html>
+<html lang="es" data-theme="light" data-accent="blue">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taller Fundamentos de Software con IA · GDG Santa Cruz</title>
+    <meta
+      name="description"
+      content="Qué necesitas saber antes de entrar a Spec-Driven Development: UX/UI, Frontend, Backend, Bases de Datos, APIs, Seguridad, Git y Entornos."
+    />
+  </head>
+  <body data-mode="presentacion">
+    <div class="canvas-bg" aria-hidden="true"></div>
+    <div class="spectrum-bar" aria-hidden="true">
+      <span></span><span></span><span></span><span></span>
+    </div>
+
+    <header class="topbar">
+      <div class="topbar__left">
+        <a href="#/0/1" class="topbar__brand" style="text-decoration: none;">
+          <GdgLogo compact />
+        </a>
+        <span class="block-chip" data-block-chip>Inicio · Portada y el problema real</span>
+      </div>
+
+      <div class="topbar__right">
+        <button type="button" class="icon-pill" data-toggle-mode>📖 Modo guía</button>
+        <button type="button" class="icon-pill" data-toggle-theme>🌙 Oscuro</button>
+        <button type="button" class="icon-pill" data-open-overview title="Vista general (O)">⊞ Índice</button>
+        <button type="button" class="icon-pill" data-open-presenter title="Vista de presentador (S)">🎤</button>
+        <button type="button" class="icon-pill" data-open-shortcuts title="Atajos (?)">?</button>
+      </div>
+    </header>
+
+    <main class="deck-stage">
+      {SLIDES.map((slide, idx) => (
+        <SlideRenderer
+          slide={slide}
+          qrSvg={qrSvg}
+          shareUrl={shareUrl}
+          totalSlides={SLIDES.length}
+          globalIndex={idx}
+        />
+      ))}
+    </main>
+
+    <nav class="dock" aria-label="Navegación de diapositivas">
+      <div class="dock-nav-arrows">
+        <button type="button" class="dock-btn" data-prev-slide aria-label="Diapositiva anterior">← Anterior</button>
+        <span class="dock-progress" data-progress-text>1 / {SLIDES.length}</span>
+        <button type="button" class="dock-btn" data-next-slide aria-label="Siguiente diapositiva">Siguiente →</button>
+      </div>
+    </nav>
+
+    <div class="modal-backdrop" data-overview-modal hidden role="dialog" aria-modal="true" aria-label="Índice de diapositivas">
+      <div class="modal-panel">
+        <div class="modal-head">
+          <h2 style="margin: 0;">Mapa completo del taller</h2>
+          <button type="button" class="dock-btn" data-close-overview>Cerrar (Esc)</button>
+        </div>
+        <div class="overview-grid">
+          {SLIDES.map((s, idx) => (
+            <button type="button" class="overview-item" data-jump-slide={idx}>
+              <small>{s.blockId}.{s.indexInBlock} · {s.eyebrow}</small>
+              <strong>{s.title}</strong>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-backdrop" data-shortcuts-modal hidden role="dialog" aria-modal="true" aria-label="Atajos de teclado">
+      <div class="modal-panel" style="max-width: 520px;">
+        <div class="modal-head">
+          <h2 style="margin: 0;">Atajos del taller</h2>
+          <button type="button" class="dock-btn" data-close-shortcuts>Cerrar</button>
+        </div>
+        <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 8px;">
+          <li><code>←</code> <code>→</code> o <code>Espacio</code>: avanzar / retroceder diapositiva</li>
+          <li><code>O</code> / <code>Esc</code>: abrir o cerrar mapa del taller</li>
+          <li><code>L</code>: alternar entre Presentación y Guía de lectura</li>
+          <li><code>T</code>: alternar tema claro / oscuro</li>
+          <li><code>S</code>: abrir consola de presentador con notas y cronómetro</li>
+        </ul>
+      </div>
+    </div>
+
+    <script id="deck-meta" type="application/json" set:html={deckMetaJson} />
+    <script>
+      import '@/scripts/deck-client';
+    </script>
+  </body>
+</html>

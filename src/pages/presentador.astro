@@ -1,0 +1,160 @@
+---
+import '@/styles/fonts.css';
+import '@/styles/tokens.css';
+import { SLIDES } from '@/data/slides';
+
+const presenterData = JSON.stringify(
+  SLIDES.map((s, idx) => ({
+    idx,
+    id: s.id,
+    blockId: s.blockId,
+    indexInBlock: s.indexInBlock,
+    title: s.title,
+    eyebrow: s.eyebrow,
+    presenterNote: s.presenterNote,
+  })),
+);
+---
+
+<!doctype html>
+<html lang="es" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Presentador · Taller Fundamentos de Software con IA</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: var(--font-sans);
+        background: var(--surface-canvas);
+        color: var(--ink-primary);
+        padding: 24px;
+      }
+      .wrap {
+        max-width: 1020px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1.3fr 1fr;
+        gap: 18px;
+      }
+      .card {
+        background: var(--surface-card);
+        border: 1px solid var(--border-hairline);
+        border-radius: 20px;
+        padding: 20px;
+      }
+      .controls {
+        grid-column: 1 / -1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      button {
+        font-family: inherit;
+        border: 1px solid var(--border-hairline);
+        background: var(--surface-subtle);
+        color: var(--ink-primary);
+        padding: 9px 16px;
+        border-radius: 999px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .timer {
+        font-family: var(--font-mono);
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="card controls">
+        <div>
+          <strong data-p-counter>1 / {SLIDES.length}</strong>
+          <span style="margin-left: 10px; color: var(--ink-muted);" data-p-eyebrow></span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span class="timer" data-p-timer>00:00</span>
+          <button type="button" data-p-reset-timer>Reiniciar</button>
+          <button type="button" data-p-prev>← Anterior</button>
+          <button type="button" data-p-next>Siguiente →</button>
+        </div>
+      </div>
+
+      <section class="card">
+        <span style="font-size: 0.8rem; color: var(--ink-muted);">Diapositiva actual</span>
+        <h1 style="margin: 8px 0 12px; font-size: 1.5rem;" data-p-title></h1>
+        <p style="font-size: 1.05rem; line-height: 1.55;" data-p-note></p>
+      </section>
+
+      <section class="card">
+        <span style="font-size: 0.8rem; color: var(--ink-muted);">Siguiente diapositiva</span>
+        <h2 style="margin: 8px 0 8px; font-size: 1.15rem;" data-p-next-title></h2>
+        <p style="font-size: 0.92rem; color: var(--ink-secondary);" data-p-next-note></p>
+      </section>
+    </div>
+
+    <script id="p-data" type="application/json" set:html={presenterData} />
+    <script>
+      const data = JSON.parse(document.getElementById('p-data')?.textContent || '[]');
+      const ch = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel('gdg-fundamentos-deck') : null;
+      let idx = 0;
+      let seconds = 0;
+
+      const cEl = document.querySelector('[data-p-counter]');
+      const eEl = document.querySelector('[data-p-eyebrow]');
+      const tEl = document.querySelector('[data-p-title]');
+      const nEl = document.querySelector('[data-p-note]');
+      const ntEl = document.querySelector('[data-p-next-title]');
+      const nnEl = document.querySelector('[data-p-next-note]');
+      const tmEl = document.querySelector('[data-p-timer]');
+
+      function render() {
+        const cur = data[idx];
+        const nxt = data[idx + 1];
+        if (!cur) return;
+        if (cEl) cEl.textContent = `${idx + 1} / ${data.length}`;
+        if (eEl) eEl.textContent = cur.eyebrow;
+        if (tEl) tEl.textContent = cur.title;
+        if (nEl) nEl.textContent = cur.presenterNote;
+        if (ntEl) ntEl.textContent = nxt ? nxt.title : 'Fin del taller';
+        if (nnEl) nnEl.textContent = nxt ? nxt.presenterNote : 'Última diapositiva alcanzada.';
+      }
+
+      document.querySelector('[data-p-prev]')?.addEventListener('click', () => {
+        idx = Math.max(0, idx - 1);
+        render();
+        ch?.postMessage({ type: 'jump-to', index: idx });
+      });
+
+      document.querySelector('[data-p-next]')?.addEventListener('click', () => {
+        idx = Math.min(data.length - 1, idx + 1);
+        render();
+        ch?.postMessage({ type: 'jump-to', index: idx });
+      });
+
+      document.querySelector('[data-p-reset-timer]')?.addEventListener('click', () => {
+        seconds = 0;
+      });
+
+      ch?.addEventListener('message', (ev) => {
+        if (ev.data?.type === 'slide-change' && typeof ev.data.index === 'number') {
+          idx = ev.data.index;
+          render();
+        }
+      });
+
+      ch?.postMessage({ type: 'request-sync' });
+      render();
+
+      setInterval(() => {
+        seconds += 1;
+        const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+        const s = String(seconds % 60).padStart(2, '0');
+        if (tmEl) tmEl.textContent = `${m}:${s}`;
+      }, 1000);
+    </script>
+  </body>
+</html>

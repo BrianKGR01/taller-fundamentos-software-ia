@@ -1,0 +1,56 @@
+---
+---
+
+<div class="ux-demo" data-ux-demo>
+  <div class="ux-demo__controls" role="tablist" aria-label="Estados de interfaz">
+    <button type="button" role="tab" aria-selected="true" class="ux-tab is-active" data-ux-state="loading">
+      1. Cargando
+    </button>
+    <button type="button" role="tab" aria-selected="false" class="ux-tab" data-ux-state="empty">
+      2. Vacío
+    </button>
+    <button type="button" role="tab" aria-selected="false" class="ux-tab" data-ux-state="error">
+      3. Error claro
+    </button>
+    <button type="button" role="tab" aria-selected="false" class="ux-tab" data-ux-state="success">
+      4. Éxito
+    </button>
+  </div>
+
+  <div class="ux-phone">
+    <div class="ux-phone__bar">
+      <span>Café Santa Cruz · Reservas</span>
+      <span class="ux-phone__badge">Móvil 390px</span>
+    </div>
+
+    <div class="ux-phone__screen" data-ux-screen="loading">
+      <div class="ux-state-view" data-state-panel="loading">
+        <div class="skeleton-line skeleton-line--lg"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <p class="ux-caption">El usuario sabe que el sistema está respondiendo (no cree que se colgó).</p>
+      </div>
+
+      <div class="ux-state-view" data-state-panel="empty" hidden>
+        <div class="state-empty-icon" aria-hidden="true">☕</div>
+        <h4>Todavía no tienes reservas</h4>
+        <p>Elige una mesa y horario para apartar tu lugar en 30 segundos.</p>
+        <span class="fake-btn fake-btn--blue">Crear primera reserva</span>
+      </div>
+
+      <div class="ux-state-view" data-state-panel="error" hidden>
+        <div class="state-badge state-badge--red">No se pudo confirmar</div>
+        <h4>Ese horario acaba de ocuparse</h4>
+        <p>No te preocupes, no se realizó ningún cobro. Elige las 19:30 o 20:00.</p>
+        <span class="fake-btn fake-btn--outline">Ver otros horarios</span>
+      </div>
+
+      <div class="ux-state-view" data-state-panel="success" hidden>
+        <div class="state-badge state-badge--green">✓ Reserva #104 confirmada</div>
+        <h4>Mesa para 4 · Hoy 19:30</h4>
+        <p>Enviamos el comprobante a tu WhatsApp y correo. Puedes cancelar hasta 2 h antes.</p>
+        <span class="fake-btn fake-btn--green">Ver mi pase</span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,143 @@
+---
+interface Station {
+  id: string;
+  badge: string;
+  metaphor: string;
+  tech: string;
+  accent: 'blue' | 'red' | 'yellow' | 'green';
+  role: string;
+  ifMissing: string;
+  askAi: string;
+}
+
+const STATIONS: Station[] = [
+  {
+    id: 'ux',
+    badge: '01',
+    metaphor: 'Salón y menú',
+    tech: 'UX/UI y Frontend',
+    accent: 'red',
+    role: 'Lo que el cliente ve, toca y recorre en su celular o computadora.',
+    ifMissing: 'Botones confusos, pantallas que se cortan en móvil o mensajes vacíos.',
+    askAi: 'Define paleta, flujo móvil primero y estados de error/carga.',
+  },
+  {
+    id: 'api',
+    badge: '02',
+    metaphor: 'El mesero',
+    tech: 'API (Contrato)',
+    accent: 'green',
+    role: 'Lleva pedidos de la pantalla a la cocina y devuelve respuestas ordenadas.',
+    ifMissing: 'El usuario no sabe si su acción funcionó o la pantalla accede directo a datos sensibles.',
+    askAi: 'Define qué pide cada pantalla y qué responde el servidor en cada caso.',
+  },
+  {
+    id: 'backend',
+    badge: '03',
+    metaphor: 'La cocina',
+    tech: 'Backend y Servidor',
+    accent: 'yellow',
+    role: 'Ejecuta las reglas reales del negocio 24/7 (precios, cupos, validaciones).',
+    ifMissing: 'Cualquiera puede manipular precios o saltarse reglas desde el navegador.',
+    askAi: 'Ejecuta precios, permisos y validaciones críticas en el servidor.',
+  },
+  {
+    id: 'db',
+    badge: '04',
+    metaphor: 'Despensa y libro',
+    tech: 'Base de Datos',
+    accent: 'blue',
+    role: 'Guarda clientes, pedidos, reservas y pagos de forma permanente y ordenada.',
+    ifMissing: 'Recargas la página y se pierde todo, o se duplican reservas.',
+    askAi: 'Diseña entidades, relaciones y respaldos antes de crear pantallas.',
+  },
+  {
+    id: 'integrations',
+    badge: '05',
+    metaphor: 'Proveedores',
+    tech: 'Integraciones externas',
+    accent: 'green',
+    role: 'Conecta pagos QR/tarjeta, WhatsApp, correos, mapas o login con Google.',
+    ifMissing: 'Se asume un pago como válido sin confirmación real del proveedor.',
+    askAi: 'Verifica pagos con webhooks seguros y maneja caídas del tercero.',
+  },
+  {
+    id: 'security',
+    badge: '06',
+    metaphor: 'Guardia y llaves',
+    tech: 'Auth y Ciberseguridad',
+    accent: 'red',
+    role: 'Comprueba quién eres, qué rol tienes y protege claves y datos privados.',
+    ifMissing: 'Cualquier usuario puede ver pedidos ajenos o tus API keys quedan públicas.',
+    askAi: 'Valida permisos por rol en el servidor y usa variables de entorno.',
+  },
+  {
+    id: 'git',
+    badge: '07',
+    metaphor: 'Historial del recetario',
+    tech: 'Git y Versiones',
+    accent: 'blue',
+    role: 'Guarda cada versión sana para volver atrás en segundos si algo se rompe.',
+    ifMissing: 'La IA daña una función anterior y pierdes horas reconstruyendo.',
+    askAi: 'Trabaja en ramas por cambio, con commits claros y `.gitignore`.',
+  },
+  {
+    id: 'envs',
+    badge: '08',
+    metaphor: 'Cocina de prueba vs. local abierto',
+    tech: 'Entornos',
+    accent: 'yellow',
+    role: 'Separa desarrollo, pruebas (staging) y producción frente a clientes reales.',
+    ifMissing: 'Un experimento de la IA tumba tu negocio mientras hay clientes comprando.',
+    askAi: 'Nunca pruebes cambios directo en producción; usa entorno de pruebas.',
+  },
+];
+---
+
+<div class="anatomy-widget" data-anatomy>
+  <div class="anatomy-grid" role="tablist" aria-label="Estaciones del software">
+    {STATIONS.map((s, idx) => (
+      <button
+        type="button"
+        role="tab"
+        aria-selected={idx === 0 ? 'true' : 'false'}
+        class:list={['anatomy-chip', `chip--${s.accent}`, { 'is-active': idx === 0 }]}
+        data-station-btn
+        data-station-id={s.id}
+        data-metaphor={s.metaphor}
+        data-tech={s.tech}
+        data-role={s.role}
+        data-missing={s.ifMissing}
+        data-ask={s.askAi}
+        data-accent-name={s.accent}
+      >
+        <span class="anatomy-chip__num">{s.badge}</span>
+        <span class="anatomy-chip__meta">
+          <strong>{s.tech}</strong>
+          <small>{s.metaphor}</small>
+        </span>
+      </button>
+    ))}
+  </div>
+
+  <div class="anatomy-inspector" data-anatomy-panel data-accent={STATIONS[0].accent}>
+    <div class="anatomy-inspector__head">
+      <span class="pill-tag" data-panel-metaphor>{STATIONS[0].metaphor}</span>
+      <h3 data-panel-tech>{STATIONS[0].tech}</h3>
+    </div>
+    <div class="anatomy-inspector__rows">
+      <div class="inspector-box">
+        <span class="inspector-box__label">Qué hace</span>
+        <p data-panel-role>{STATIONS[0].role}</p>
+      </div>
+      <div class="inspector-box inspector-box--warn">
+        <span class="inspector-box__label">Si falta o queda mal</span>
+        <p data-panel-missing>{STATIONS[0].ifMissing}</p>
+      </div>
+      <div class="inspector-box inspector-box--ok">
+        <span class="inspector-box__label">Qué exigir a la IA</span>
+        <p data-panel-ask>{STATIONS[0].askAi}</p>
+      </div>
+    </div>
+  </div>
+</div>

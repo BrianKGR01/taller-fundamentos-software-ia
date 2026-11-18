@@ -1,0 +1,15 @@
+---
+import logoLight from '@/assets/gdg/gdg-logo-light.svg?raw';
+import logoDark from '@/assets/gdg/gdg-logo-dark.svg?raw';
+
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<span class:list={['gdg-logo', { 'gdg-logo--compact': compact }]} aria-label="Google Developer Groups Santa Cruz">
+  <span class="gdg-logo__for-light" set:html={logoLight} />
+  <span class="gdg-logo__for-dark" set:html={logoDark} />
+</span>

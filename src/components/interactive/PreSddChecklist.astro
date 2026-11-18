@@ -1,0 +1,33 @@
+---
+const CHECKLIST_ITEMS = [
+  { id: 'ux', label: 'Flujos de usuario, pantallas clave y estados de error/vacío (UX/UI + Frontend)' },
+  { id: 'backend', label: 'Qué reglas críticas (precios, cupos, lógica) viven obligatoriamente en el Backend' },
+  { id: 'db', label: 'Qué datos se guardan, cómo se relacionan y qué estados existen (Base de Datos)' },
+  { id: 'api', label: 'Qué servicios externos se conectan (pagos, WhatsApp, correos) y cómo se verifican' },
+  { id: 'auth', label: 'Qué roles existen y qué puede ver/hacer cada rol (AuthN + AuthZ)' },
+  { id: 'sec', label: 'Dónde van los secretos (.env) y qué datos personales hay que proteger' },
+  { id: 'git', label: 'Repositorio Git inicializado con .gitignore antes de generar código con IA' },
+  { id: 'envs', label: 'Entorno de pruebas separado antes de exponer algo a clientes reales' },
+];
+---
+
+<div class="checklist-widget" data-checklist>
+  <div class="checklist-meter">
+    <div class="checklist-meter__text">
+      <strong data-check-count>0 / 8 listos</strong>
+      <span data-check-msg>Marca lo que ya tienes claro para tu próximo proyecto</span>
+    </div>
+    <div class="checklist-bar" aria-hidden="true">
+      <div class="checklist-bar__fill" data-check-fill style="width: 0%"></div>
+    </div>
+  </div>
+
+  <div class="checklist-items">
+    {CHECKLIST_ITEMS.map((item) => (
+      <label class="check-row">
+        <input type="checkbox" data-check-input value={item.id} />
+        <span>{item.label}</span>
+      </label>
+    ))}
+  </div>
+</div>

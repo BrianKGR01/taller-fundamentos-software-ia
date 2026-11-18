@@ -1,0 +1,40 @@
+---
+---
+
+<div class="backend-demo" data-backend-demo>
+  <div class="backend-demo__top">
+    <div class="backend-mode-switch" role="group" aria-label="Modo de validación">
+      <button type="button" class="mode-pill is-active" data-backend-mode="insecure" aria-pressed="true">
+        ❌ Solo Frontend (inseguro)
+      </button>
+      <button type="button" class="mode-pill" data-backend-mode="secure" aria-pressed="false">
+        ✅ Validado en Backend
+      </button>
+    </div>
+    <button type="button" class="action-tamper" data-tamper-btn>
+      ⚡ Simular usuario editando precio (Bs. 120 → Bs. 1)
+    </button>
+  </div>
+
+  <div class="backend-flow">
+    <div class="flow-card">
+      <span class="flow-card__tag">Navegador del cliente</span>
+      <p class="flow-card__price">
+        Combo Taller · <strong data-client-price>Bs. 120</strong>
+      </p>
+      <small data-client-note>Precio original visible en pantalla.</small>
+    </div>
+
+    <div class="flow-arrow" aria-hidden="true">→</div>
+
+    <div class="flow-card flow-card--server" data-server-card>
+      <span class="flow-card__tag">Respuesta del Servidor</span>
+      <p class="flow-card__result" data-server-result>
+        Esperando prueba… pulsa «Simular usuario editando precio».
+      </p>
+      <small data-server-explain>
+        Alterna entre ambos modos para ver por qué la regla nunca debe vivir solo en el navegador.
+      </small>
+    </div>
+  </div>
+</div>
